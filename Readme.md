@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм» [![Build status][travis-image]][travis-url]
 
 * Студент: [Evgeniy Malashenko](https://up.htmlacademy.ru/javascript/11/user/201086).
-* Наставник: `Неизвестно`.
+* Наставник: [Анзар Щумахуа](https://htmlacademy.ru/profile/id407771).
 
 ---
 
