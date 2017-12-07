@@ -68,7 +68,7 @@ var onPopupEnterClose = function (evt) {
     pictureCloseItem.removeEventListener('keydown', onPopupEnterClose);
   }
 };
-var onPopupClickClose = function (evt) {
+var onPopupClickClose = function () {
   closePopup();
   pictureCloseItem.removeEventListener('click', onPopupClickClose);
 };
