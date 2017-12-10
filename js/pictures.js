@@ -86,4 +86,103 @@ pictureGlobal.addEventListener('click', function (evt) {
   var index = parentEl.getAttribute('data-index');
   showGalleryOverly(+index);
 });
+var uploadFile = document.querySelector('#upload-file');
+var uploadOverlay = document.querySelector('.upload-overlay');
+var uploadFormCancel = document.querySelector('.upload-form-cancel');
+var onCloseUploadOverlay = function () {
+  uploadOverlay.classList.add('hidden');
+};
+var onUploadOverlayEsc = function (evt) {
+  if (evt.keyCode === ESC_KEYCODE) {
+    onCloseUploadOverlay();
+    document.removeEventListener('keydown', onUploadOverlayEsc);
+  }
+};
+var onUploadCloseOverlayEnter = function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    onCloseUploadOverlay();
+  }
+};
+uploadFile.addEventListener('change', function () {
+  uploadOverlay.classList.remove('hidden');
+  document.addEventListener('keydown', onUploadOverlayEsc);
+});
+uploadFormCancel.addEventListener('click', onCloseUploadOverlay);
+uploadFormCancel.addEventListener('keydown', onUploadCloseOverlayEnter);
 
+var uploadResizeControlsValue = document.querySelector('.upload-resize-controls-value');
+var uploadResizeControlsButtonDec = document.querySelector('.upload-resize-controls-button-dec');
+var uploadResizeControlsButtonInc = document.querySelector('.upload-resize-controls-button-inc');
+var uploadEffectControls = document.querySelector('.upload-effect-controls');
+var effectImagePreview = document.querySelector('.effect-image-preview');
+uploadResizeControlsButtonDec.addEventListener('click', function () {
+  var value = parseInt(uploadResizeControlsValue.value, 10) - parseInt(uploadResizeControlsValue.step, 10);
+  if (value >= 25) {
+    uploadResizeControlsValue.value = value + '%';
+    effectImagePreview.style.transform = 'scale(' + (value / 100) + ')';
+  } else {
+    uploadResizeControlsValue.value = 25 + '%';
+    effectImagePreview.style.transform = 'scale(' + 0.25 + ')';
+  }
+
+});
+uploadResizeControlsButtonInc.addEventListener('click', function () {
+  var value = parseInt(uploadResizeControlsValue.value, 10) + parseInt(uploadResizeControlsValue.step, 10);
+  if (value <= 100) {
+    uploadResizeControlsValue.value = value + '%';
+    effectImagePreview.style.transform = 'scale(' + (value / 100) + ')';
+  } else {
+    uploadResizeControlsValue.value = 100 + '%';
+    effectImagePreview.style.transform = 'scale(' + 1 + ')';
+  }
+});
+
+uploadEffectControls.addEventListener('change', function (evt) {
+  effectImagePreview.className = 'effect-image-preview ' + evt.target.id.slice(7);
+}, true);
+
+var uploadFormHashtags = document.querySelector('.upload-form-hashtags');
+var uploadSelectImage = document.getElementById('upload-select-image');
+var isValidHash = function () {
+  var valueInput = uploadFormHashtags.value.toLowerCase();
+  var valueInputArray = valueInput.split(' ');
+  var isValueStartsHash = valueInputArray.every(function (hash) {
+    return hash[0] === '#';
+  });
+  if (!isValueStartsHash) {
+    uploadFormHashtags.setCustomValidity('хэш-тег начинается с символа `#` (решётка)');
+    return false;
+  }
+
+  var isValuesUniqeHash = valueInputArray.every(function (hash, index, arr) {
+    var flag = true;
+    for (var i = index + 1; i < arr.length; i++) {
+      if (hash === arr[i]) {
+        flag = false;
+      }
+    }
+    return flag;
+  });
+  if (!isValuesUniqeHash) {
+    uploadFormHashtags.setCustomValidity('один и тот же хэш-тег не может быть использован дважды');
+    return false;
+  }
+  if (valueInputArray.length > 5) {
+    uploadFormHashtags.setCustomValidity('нельзя указать больше пяти хэш-тегов');
+    return false;
+  }
+  var isValueLangthHash = valueInputArray.every(function (hash) {
+    return hash.length <= 20;
+  });
+  if (!isValueLangthHash) {
+    uploadFormHashtags.setCustomValidity('максимальная длина одного хэш-тега 20 символов');
+    return false;
+  }
+  return true;
+};
+uploadSelectImage.addEventListener('submit', function (evt) {
+  if (!isValidHash()) {
+    evt.preventDefault();
+    uploadFormHashtags.style.borderColor = 'red';
+  }
+});
