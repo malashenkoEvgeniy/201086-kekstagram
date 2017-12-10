@@ -148,7 +148,6 @@ uploadEffectControls.addEventListener('change', function (evt) {
 }, true);
 
 var uploadFormHashtags = document.querySelector('.upload-form-hashtags');
-var uploadSelectImage = document.querySelector('#upload-select-image');
 var getValidHash = function () {
   var valueInput = uploadFormHashtags.value.toLowerCase();
   var valueInputArray = valueInput.split(' ');
