@@ -1,7 +1,6 @@
 'use strict';
 (function () {
 
-  var pictures = [];
   var pictureGlobal = document.querySelector('.pictures');
   var pictureCloseItem = document.querySelector('.gallery-overlay-close');
   var pictureClosePopup = document.querySelector('.gallery-overlay');
@@ -12,9 +11,9 @@
 
   var showGalleryOverly = function (k) {
     var galleryOverlay = document.querySelector('.gallery-overlay');
-    galleryOverlay.querySelector('.gallery-overlay-image').src = pictures[k].url;
-    galleryOverlay.querySelector('.likes-count').textContent = pictures[k].likes;
-    galleryOverlay.querySelector('.comments-count').textContent = pictures[k].comments;
+    galleryOverlay.querySelector('.gallery-overlay-image').src = window.pictures[k].url;
+    galleryOverlay.querySelector('.likes-count').textContent = window.pictures[k].likes;
+    galleryOverlay.querySelector('.comments-count').textContent = window.pictures[k].comments;
     galleryOverlay.classList.remove('hidden');
     pictureCloseItem.addEventListener('keydown', onPopupEnterClose);
     pictureCloseItem.addEventListener('click', onPopupClickClose);
