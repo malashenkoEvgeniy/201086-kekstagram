@@ -1,6 +1,5 @@
 'use strict';
 (function () {
-
   var pictureGlobal = document.querySelector('.pictures');
   var pictureCloseItem = document.querySelector('.gallery-overlay-close');
   var pictureClosePopup = document.querySelector('.gallery-overlay');
