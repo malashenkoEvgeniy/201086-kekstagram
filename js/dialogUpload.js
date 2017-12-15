@@ -1,4 +1,5 @@
 'use strict';
+window.effectsFilter = 'none';
 (function () {
   var DISCRIPTION_ERROR = {
     hashError1: 'хэш-тег начинается с символа `#` (решётка)',
@@ -31,6 +32,10 @@
   var uploadResizeControlsButtonDec = document.querySelector('.upload-resize-controls-button-dec');
   var uploadResizeControlsButtonInc = document.querySelector('.upload-resize-controls-button-inc');
   var uploadEffectControls = document.querySelector('.upload-effect-controls');
+  var uploadEffectNone = document.querySelector('#upload-effect-none');
+  var dialogAmbit = document.querySelector('.upload-effect-level');
+
+
   var effectImagePreview = document.querySelector('.effect-image-preview');
   uploadResizeControlsButtonDec.addEventListener('click', function () {
     var value = parseInt(uploadResizeControlsValue.value, 10) - parseInt(uploadResizeControlsValue.step, 10);
@@ -53,9 +58,24 @@
       effectImagePreview.style.transform = 'scale(' + 1 + ')';
     }
   });
-
+  if (uploadEffectNone.checked) {
+    dialogAmbit.classList.add('hidden');
+  }
+  var filterChangeFoo = null;
+  window.onFilterChange = function (foo) {
+    filterChangeFoo = foo;
+  };
   uploadEffectControls.addEventListener('change', function (evt) {
     effectImagePreview.className = 'effect-image-preview ' + evt.target.id.slice(7);
+    effectImagePreview.style.filter = '';
+    window.effectsFilter = evt.target.id.slice(7);
+    filterChangeFoo(evt.target.id.slice(7));
+
+    if (uploadEffectNone.checked) {
+      dialogAmbit.classList.add('hidden');
+    } else {
+      dialogAmbit.classList.remove('hidden');
+    }
   }, true);
 
   var uploadFormHashtags = document.querySelector('.upload-form-hashtags');
