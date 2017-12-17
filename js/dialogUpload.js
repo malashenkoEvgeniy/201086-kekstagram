@@ -31,7 +31,7 @@ window.effectsFilter = 'none';
   var uploadResizeControlsValue = document.querySelector('.upload-resize-controls-value');
   var uploadResizeControlsButtonDec = document.querySelector('.upload-resize-controls-button-dec');
   var uploadResizeControlsButtonInc = document.querySelector('.upload-resize-controls-button-inc');
-  var uploadEffectControls = document.querySelector('.upload-effect-controls');
+
   var uploadEffectNone = document.querySelector('#upload-effect-none');
   var dialogAmbit = document.querySelector('.upload-effect-level');
 
@@ -39,45 +39,27 @@ window.effectsFilter = 'none';
   var effectImagePreview = document.querySelector('.effect-image-preview');
   uploadResizeControlsButtonDec.addEventListener('click', function () {
     var value = parseInt(uploadResizeControlsValue.value, 10) - parseInt(uploadResizeControlsValue.step, 10);
-    if (value >= 25) {
-      uploadResizeControlsValue.value = value + '%';
-      effectImagePreview.style.transform = 'scale(' + (value / 100) + ')';
-    } else {
-      uploadResizeControlsValue.value = 25 + '%';
-      effectImagePreview.style.transform = 'scale(' + 0.25 + ')';
+    if (value < 25) {
+      value = 25;
     }
-
+    uploadResizeControlsValue.value = value + '%';
+    window.initializeScale(uploadResizeControlsValue, onScale);
   });
   uploadResizeControlsButtonInc.addEventListener('click', function () {
     var value = parseInt(uploadResizeControlsValue.value, 10) + parseInt(uploadResizeControlsValue.step, 10);
-    if (value <= 100) {
-      uploadResizeControlsValue.value = value + '%';
-      effectImagePreview.style.transform = 'scale(' + (value / 100) + ')';
-    } else {
-      uploadResizeControlsValue.value = 100 + '%';
-      effectImagePreview.style.transform = 'scale(' + 1 + ')';
+    if (value > 100) {
+      value = 100;
     }
+    uploadResizeControlsValue.value = value + '%';
+    window.initializeScale(uploadResizeControlsValue, onScale);
   });
+  var onScale = function (scale) {
+    effectImagePreview.style.transform = 'scale(' + (scale / 100) + ')';
+  };
+  window.initializeScale(uploadResizeControlsValue, onScale);
   if (uploadEffectNone.checked) {
     dialogAmbit.classList.add('hidden');
   }
-  var filterChangeFoo = null;
-  window.onFilterChange = function (foo) {
-    filterChangeFoo = foo;
-  };
-  uploadEffectControls.addEventListener('change', function (evt) {
-    effectImagePreview.className = 'effect-image-preview ' + evt.target.id.slice(7);
-    effectImagePreview.style.filter = '';
-    window.effectsFilter = evt.target.id.slice(7);
-    filterChangeFoo(evt.target.id.slice(7));
-
-    if (uploadEffectNone.checked) {
-      dialogAmbit.classList.add('hidden');
-    } else {
-      dialogAmbit.classList.remove('hidden');
-    }
-  }, true);
-
   var uploadFormHashtags = document.querySelector('.upload-form-hashtags');
   var getValidHash = function () {
     var valueInput = uploadFormHashtags.value.toLowerCase();

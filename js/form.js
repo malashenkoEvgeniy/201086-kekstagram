@@ -1,7 +1,8 @@
 'use strict';
 (function () {
   var effectImagePreview = document.querySelector('.effect-image-preview');
-  var setFilterEffectValue = function (filterEffect, filterValue) {
+  var setFilterEffectValue = function (filterValue) {
+    var filterEffect = window.effectsFilter;
     if (filterEffect === 'effect-chrome') {
       effectImagePreview.style.filter = 'grayscale(' + (filterValue * 0.01) + ')';
     } else if (filterEffect === 'effect-sepia') {
@@ -14,55 +15,35 @@
       effectImagePreview.style.filter = 'brightness(' + filterValue * 0.03 + ')';
     }
   };
+  var filterChangeFoo = null;
+  window.onFilterChange = function (foo) {
+    filterChangeFoo = foo;
+  };
+  var uploadEffectControls = document.querySelector('.upload-effect-controls');
+  var uploadEffectNone = document.querySelector('#upload-effect-none');
+  var dialogAmbit = document.querySelector('.upload-effect-level');
+  uploadEffectControls.addEventListener('change', function (evt) {
+    effectImagePreview.className = 'effect-image-preview ' + evt.target.id.slice(7);
+    effectImagePreview.style.filter = '';
+    window.effectsFilter = evt.target.id.slice(7);
+    filterChangeFoo();
+
+    if (uploadEffectNone.checked) {
+      dialogAmbit.classList.add('hidden');
+    } else {
+      dialogAmbit.classList.remove('hidden');
+    }
+  }, true);
+
   var dialogHandle = document.querySelector('.upload-effect-level-pin');
   var dialogFat = document.querySelector('.upload-effect-level-val');
 
   var uploadEffectLevelValue = document.querySelector('.upload-effect-level-value');
-  dialogHandle.addEventListener('mousedown', function (evt) {
-    evt.preventDefault();
-    var startCoords = {
-      x: evt.clientX,
-      y: evt.clientY
-    };
-    var onMouseMove = function (moveEvt) {
-      moveEvt.preventDefault();
-
-      var shift = {
-        x: startCoords.x - moveEvt.clientX,
-        y: startCoords.y - moveEvt.clientY
-      };
-
-      startCoords = {
-        x: moveEvt.clientX,
-      };
-      var futureX = dialogHandle.offsetLeft - shift.x;
-      var min = 0;
-      var max = dialogHandle.offsetParent.offsetWidth;
-      if (futureX > max) {
-        dialogHandle.style.left = max + 'px';
-      } else if (futureX < min) {
-        dialogHandle.style.left = min;
-      } else {
-        dialogHandle.style.left = (futureX) + 'px';
-        uploadEffectLevelValue.value = Math.round(100 / max * futureX);
-      }
-      dialogFat.style.width = dialogHandle.style.left;
-      setFilterEffectValue(window.effectsFilter, uploadEffectLevelValue.value);
-    };
-    var onMouseUp = function (upEvt) {
-      upEvt.preventDefault();
-
-      document.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseup', onMouseUp);
-    };
-    document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', onMouseUp);
-
-  });
-  window.onFilterChange(function (filterEffect) {
+  window.onFilterChange(function () {
     dialogHandle.style.left = 20 + '%';
     dialogFat.style.width = 20 + '%';
     uploadEffectLevelValue.value = 20;
-    setFilterEffectValue(filterEffect, 20);
+    setFilterEffectValue(20);
   });
+  window.initializeFilters(setFilterEffectValue);
 })();
