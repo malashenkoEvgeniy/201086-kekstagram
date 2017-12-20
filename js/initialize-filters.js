@@ -50,4 +50,10 @@
       callback = foo;
     }
   };
+  window.clearFilter = function () {
+    dialogHandle.style.left = 20 + '%';
+    dialogFat.style.width = 20 + '%';
+    uploadEffectLevelValue.value = 20;
+    window.setFilterEffectValue(20);
+  };
 })();
