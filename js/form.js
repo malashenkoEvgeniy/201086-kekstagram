@@ -1,8 +1,9 @@
 'use strict';
 (function () {
+  var uploadForm = document.querySelector('.upload-form');
   var effectImagePreview = document.querySelector('.effect-image-preview');
-  var setFilterEffectValue = function (filterValue) {
-    var filterEffect = window.effectsFilter;
+  window.setFilterEffectValue = function (filterValue) {
+    var filterEffect = document.querySelector('input[name="effect"]:checked').id.slice(7);
     if (filterEffect === 'effect-chrome') {
       effectImagePreview.style.filter = 'grayscale(' + (filterValue * 0.01) + ')';
     } else if (filterEffect === 'effect-sepia') {
@@ -13,6 +14,8 @@
       effectImagePreview.style.filter = 'blur(' + filterValue * 0.03 + 'px)';
     } else if (filterEffect === 'effect-heat') {
       effectImagePreview.style.filter = 'brightness(' + filterValue * 0.03 + ')';
+    } else {
+      effectImagePreview.style.filter = '';
     }
   };
   var filterChangeFoo = null;

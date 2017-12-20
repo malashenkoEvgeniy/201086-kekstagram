@@ -24,6 +24,14 @@ window.effectsFilter = 'none';
   uploadFile.addEventListener('change', function () {
     uploadOverlay.classList.remove('hidden');
     document.addEventListener('keydown', onUploadOverlayEsc);
+    window.initializeScale(uploadResizeControlsValue, onScale);
+    window.clearFilter();
+    if (uploadEffectNone.checked) {
+      dialogAmbit.classList.add('hidden');
+    } else {
+      dialogAmbit.classList.remove('hidden');
+    }
+
   });
   uploadFormCancel.addEventListener('click', onCloseUploadOverlay);
   uploadFormCancel.addEventListener('keydown', onUploadCloseOverlayEnter);
@@ -112,5 +120,14 @@ window.effectsFilter = 'none';
     if (getValidHash() !== '') {
       uploadFormHashtags.style.borderColor = 'red';
     }
+  });
+  var uploadForm = document.querySelector('.upload-form');
+  uploadForm.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+    var formData = new FormData(uploadForm);
+    window.backend.save(formData, function () {
+      onCloseUploadOverlay();
+      uploadForm.reset();
+    });
   });
 }());
