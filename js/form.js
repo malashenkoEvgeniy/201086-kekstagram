@@ -1,6 +1,5 @@
 'use strict';
 (function () {
-  var uploadForm = document.querySelector('.upload-form');
   var effectImagePreview = document.querySelector('.effect-image-preview');
   window.setFilterEffectValue = function (filterValue) {
     var filterEffect = document.querySelector('input[name="effect"]:checked').id.slice(7);
@@ -26,7 +25,6 @@
   var uploadEffectNone = document.querySelector('#upload-effect-none');
   var dialogAmbit = document.querySelector('.upload-effect-level');
   uploadEffectControls.addEventListener('change', function (evt) {
-    effectImagePreview.className = 'effect-image-preview ' + evt.target.id.slice(7);
     effectImagePreview.style.filter = '';
     window.effectsFilter = evt.target.id.slice(7);
     filterChangeFoo();
@@ -46,7 +44,7 @@
     dialogHandle.style.left = 20 + '%';
     dialogFat.style.width = 20 + '%';
     uploadEffectLevelValue.value = 20;
-    setFilterEffectValue(20);
+    window.setFilterEffectValue(20);
   });
-  window.initializeFilters(setFilterEffectValue);
+  window.initializeFilters(window.setFilterEffectValue);
 })();
