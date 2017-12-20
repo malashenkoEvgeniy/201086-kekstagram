@@ -122,12 +122,17 @@ window.effectsFilter = 'none';
     }
   });
   var uploadForm = document.querySelector('.upload-form');
+  var showFilters = function () {
+    var filters = document.querySelector('.filters');
+    filters.classList.remove('filters-inactive');
+  };
   uploadForm.addEventListener('submit', function (evt) {
     evt.preventDefault();
     var formData = new FormData(uploadForm);
     window.backend.save(formData, function () {
       onCloseUploadOverlay();
       uploadForm.reset();
+      showFilters();
     });
   });
 }());
