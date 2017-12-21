@@ -132,7 +132,7 @@ window.effectsFilter = 'none';
     var filters = document.querySelector('.filters');
     filters.classList.remove('filters-inactive');
   };
-
+  
   // отправка формы
   uploadForm.addEventListener('submit', function (evt) {
     evt.preventDefault();
