@@ -24,7 +24,6 @@
   }, function (error) {
     window.showErrorMessage(error);
   });
-
   var pictureFilters = document.querySelector('.filters');
   pictureFilters.addEventListener('change', function (evt) {
     var sortedPictures = getSortedPictures(evt.target.value);
