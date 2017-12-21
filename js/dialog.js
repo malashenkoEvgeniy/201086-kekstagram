@@ -5,10 +5,8 @@
   var pictureClosePopup = document.querySelector('.gallery-overlay');
   var closePopup = function () {
     pictureClosePopup.classList.add('hidden');
-    document.removeEventListener('keydown', onPopupEscPress);
   };
-
-  var showGalleryOverly = function (k) {
+  var showGalleryOverlay = function (k) {
     var galleryOverlay = document.querySelector('.gallery-overlay');
     galleryOverlay.querySelector('.gallery-overlay-image').src = window.pictures[k].url;
     galleryOverlay.querySelector('.likes-count').textContent = window.pictures[k].likes;
@@ -16,17 +14,23 @@
     galleryOverlay.classList.remove('hidden');
     pictureCloseItem.addEventListener('keydown', onPopupEnterClose);
     pictureCloseItem.addEventListener('click', onPopupClickClose);
+    document.addEventListener('keydown', onPopupEscPress);
   };
   var onPopupEnterClose = function (evt) {
-    window.util.isEnterEvent(evt, closePopup);
-    pictureCloseItem.removeEventListener('keydown', onPopupEnterClose);
+    window.util.isEnterEvent(evt, function () {
+      closePopup();
+      pictureCloseItem.removeEventListener('keydown', onPopupEnterClose);
+    });
   };
   var onPopupClickClose = function () {
     closePopup();
     pictureCloseItem.removeEventListener('click', onPopupClickClose);
   };
   var onPopupEscPress = function (evt) {
-    window.util.isEscEvent(evt, closePopup);
+    window.util.isEscEvent(evt, function () {
+      closePopup();
+      document.removeEventListener('keydown', onPopupEscPress);
+    });
   };
   pictureGlobal.addEventListener('click', function (evt) {
     evt.preventDefault();
@@ -35,6 +39,6 @@
       parentEl = parentEl.parentNode;
     }
     var index = parentEl.getAttribute('data-index');
-    showGalleryOverly(+index);
+    showGalleryOverlay(+index);
   });
 })();

@@ -9,10 +9,33 @@
       xhr.open('GET', backendUrl);
       xhr.responseType = 'json';
       xhr.addEventListener('load', function () {
-        onLoad(xhr.response);
+        var error;
+        switch (xhr.status) {
+          case 200:
+            onLoad(xhr.response);
+            break;
+          case 400:
+            error = 'Неверный запрос';
+            break;
+          case 401:
+            error = 'Пользователь не авторизирован ';
+            break;
+          case 404:
+            error = 'Ничего не найдено! ';
+            break;
+          default:
+            error = 'Неизвестный статус: ' + xhr.status + ' ' + xhr.statusText;
+
+        }
+        if (error) {
+          onError(error);
+        }
       });
       xhr.addEventListener('error', function () {
         onError(xhr.status + ':' + xhr.statusText);
+      });
+      xhr.addEventListener('timeout', function () {
+        onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
       });
       xhr.send();
     },
@@ -21,13 +44,22 @@
       xhr.open('POST', backendSaveUrl);
       xhr.responseType = 'json';
       xhr.addEventListener('load', function () {
-        onLoad(xhr.response);
+        switch (xhr.status) {
+          case 200:
+            onLoad(xhr.response);
+            break;
+
+          default:
+            onError('Неизвестный статус: ' + xhr.status + ' ' + xhr.statusText);
+        }
       });
       xhr.addEventListener('error', function () {
         onError(xhr.status + ':' + xhr.statusText);
       });
+      xhr.addEventListener('timeout', function () {
+        onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
+      });
       xhr.send(data);
     }
-
   };
 }());

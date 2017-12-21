@@ -37,7 +37,7 @@
           <button type="button"
                   class="upload-resize-control upload-resize-controls-button upload-resize-controls-button-dec">–
           </button><!--
-          --><input type="text" class="upload-resize-control upload-resize-controls-value" step="25" min="25" max="100" value="55%" readonly title="Image Scale" name="scale"/><!--
+          --><input type="text" class="upload-resize-control upload-resize-controls-value" step="25" min="25" max="100" value="100%" readonly title="Image Scale" name="scale"/><!--
           --><button type="button"
                   class="upload-resize-control upload-resize-controls-button upload-resize-controls-button-inc">+
           </button>
@@ -141,7 +141,7 @@
     </div>
   </div>
 </div>
-
+<div class="load-error-message hidden"></div>
 <template id="picture-template" style="display: none">
   <a href="" class="picture">
     <img src="" width="182" height="182">
@@ -151,6 +151,7 @@
     </span>
   </a>
 </template>
+<script src="js/error-message.js"></script>
 <script src="js/debounce.js"></script>
 <script src="js/backend.js"></script>
 <script src="js/initialize-scale.js"></script>
