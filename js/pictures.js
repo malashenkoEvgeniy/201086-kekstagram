@@ -21,4 +21,40 @@
     window.pictures = pictures;
     addsTemplate(pictures);
   });
+  var filters = document.querySelector('.filters');
+  filters.addEventListener('change', function (evt) {
+    var sortedPictures = getSortedPictures(evt.target.value);
+    debounceUpdateTemplates(sortedPictures);
+  }, true);
+  var clearPictures = function () {
+    var pictures = document.querySelector('.pictures');
+    pictures.innerHTML = '';
+  };
+  var getSortedPictures = function (feature) {
+    var sortArr = window.pictures.slice();
+    switch (feature) {
+      case 'recommend': break;
+      case 'popular':
+        sortArr.sort(function (first, second) {
+          return second.likes - first.likes;
+        });
+        break;
+      case 'discussed':
+        sortArr.sort(function (first, second) {
+          return second.comments.length - first.comments.length;
+        });
+        break;
+      case 'random':
+        sortArr.sort(function () {
+          return (Math.random() - 0.5);
+        });
+        break;
+    }
+    return sortArr;
+  };
+  var updateTemplates = function (pictures) {
+    clearPictures();
+    addsTemplate(pictures);
+  };
+  var debounceUpdateTemplates = window.debounce(updateTemplates);
 })();
