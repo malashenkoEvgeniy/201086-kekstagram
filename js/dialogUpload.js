@@ -7,6 +7,11 @@ window.effectsFilter = 'none';
     HASH_ERROR_3: 'нельзя указать больше пяти хэш-тегов',
     HASH_ERROR_4: 'максимальная длина одного хэш-тега 20 символов'
   };
+  var SUM_HASH = 5;
+  var MIN_VALUE = 25;
+  var MAX_VALUE = 100;
+  var SCALE_NOTATION = 10;
+  var MAX_LENGTH_HASH = 20;
 
   // Открытие и закрытие формы загрузки фотографий
   var uploadFile = document.querySelector('#upload-file');
@@ -50,23 +55,23 @@ window.effectsFilter = 'none';
 
   var effectImagePreview = document.querySelector('.effect-image-preview');
   uploadResizeControlsButtonDec.addEventListener('click', function () {
-    var value = parseInt(uploadResizeControlsValue.value, 10) - parseInt(uploadResizeControlsValue.step, 10);
-    if (value < 25) {
-      value = 25;
+    var value = parseInt(uploadResizeControlsValue.value, SCALE_NOTATION) - parseInt(uploadResizeControlsValue.step, SCALE_NOTATION);
+    if (value < MIN_VALUE) {
+      value = MIN_VALUE;
     }
     uploadResizeControlsValue.value = value + '%';
     window.initializeScale(uploadResizeControlsValue, onScale);
   });
   uploadResizeControlsButtonInc.addEventListener('click', function () {
-    var value = parseInt(uploadResizeControlsValue.value, 10) + parseInt(uploadResizeControlsValue.step, 10);
-    if (value > 100) {
-      value = 100;
+    var value = parseInt(uploadResizeControlsValue.value, SCALE_NOTATION) + parseInt(uploadResizeControlsValue.step, SCALE_NOTATION);
+    if (value > MAX_VALUE) {
+      value = MAX_VALUE;
     }
     uploadResizeControlsValue.value = value + '%';
     window.initializeScale(uploadResizeControlsValue, onScale);
   });
   var onScale = function (scale) {
-    effectImagePreview.style.transform = 'scale(' + (scale / 100) + ')';
+    effectImagePreview.style.transform = 'scale(' + (scale / MAX_VALUE) + ')';
   };
   window.initializeScale(uploadResizeControlsValue, onScale);
   if (uploadEffectNone.checked) {
@@ -97,11 +102,11 @@ window.effectsFilter = 'none';
     if (!isValuesUniqeHash) {
       return DiscriptionError.HASH_ERROR_2;
     }
-    if (valueInputArray.length > 5) {
+    if (valueInputArray.length > SUM_HASH) {
       return DiscriptionError.HASH_ERROR_3;
     }
     var isValueLengthHash = valueInputArray.every(function (hash) {
-      return hash.length <= 20;
+      return hash.length <= MAX_LENGTH_HASH;
     });
     if (!isValueLengthHash) {
       return DiscriptionError.HASH_ERROR_4;
@@ -128,10 +133,6 @@ window.effectsFilter = 'none';
     }
   });
   var uploadForm = document.querySelector('.upload-form');
-  var showFilters = function () {
-    var filters = document.querySelector('.filters');
-    filters.classList.remove('filters-inactive');
-  };
 
   // отправка формы
   uploadForm.addEventListener('submit', function (evt) {
@@ -140,7 +141,6 @@ window.effectsFilter = 'none';
     window.backend.save(formData, function () {
       onCloseUploadOverlay();
       uploadForm.reset();
-      showFilters();
     }, function (error) {
       window.showErrorMessage(error);
     });

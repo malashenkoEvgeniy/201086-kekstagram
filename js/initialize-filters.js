@@ -1,5 +1,7 @@
 'use strict';
 (function () {
+  var DEFAULT_VALUE = 20;
+  var FILTER_MAX_VALUE = 100;
   var dialogHandle = document.querySelector('.upload-effect-level-pin');
   var dialogFat = document.querySelector('.upload-effect-level-val');
   var uploadEffectLevelValue = document.querySelector('.upload-effect-level-value');
@@ -30,7 +32,7 @@
         dialogHandle.style.left = min;
       } else {
         dialogHandle.style.left = (futureX) + 'px';
-        uploadEffectLevelValue.value = Math.round(100 / max * futureX);
+        uploadEffectLevelValue.value = Math.round(FILTER_MAX_VALUE / max * futureX);
       }
       dialogFat.style.width = dialogHandle.style.left;
       callback(uploadEffectLevelValue.value);
@@ -51,9 +53,9 @@
     }
   };
   window.clearFilter = function () {
-    dialogHandle.style.left = 20 + '%';
-    dialogFat.style.width = 20 + '%';
-    uploadEffectLevelValue.value = 20;
-    window.setFilterEffectValue(20);
+    dialogHandle.style.left = DEFAULT_VALUE + '%';
+    dialogFat.style.width = DEFAULT_VALUE + '%';
+    uploadEffectLevelValue.value = DEFAULT_VALUE;
+    window.setFilterEffectValue(DEFAULT_VALUE);
   };
 })();

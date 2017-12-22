@@ -1,5 +1,6 @@
 'use strict';
 (function () {
+  var TIMEOUT = 10000;
   var loadErrorMessage = document.querySelector('.load-error-message');
   window.showErrorMessage = function (message) {
     loadErrorMessage.textContent = message;
@@ -7,7 +8,7 @@
     setTimeout(function () {
       loadErrorMessage.textContent = '';
       loadErrorMessage.classList.add('hidden');
-    }, 10000);
+    }, TIMEOUT);
   };
 })();
 

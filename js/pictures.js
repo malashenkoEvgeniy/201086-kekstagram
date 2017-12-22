@@ -1,6 +1,11 @@
 'use strict';
 (function () {
+  var RANDOM_NUMBER = 0.5;
   window.pictures = [];
+  var showFilters = function () {
+    var filters = document.querySelector('.filters');
+    filters.classList.remove('filters-inactive');
+  };
   var addTemplates = function (pictures) {
     var picturesTemplate = document.querySelector('#picture-template').content;
     var picturesFragment = document.createDocumentFragment();
@@ -9,7 +14,7 @@
       picturesChildElement.querySelector('.picture img').src = pictures[l].url;
       picturesChildElement.querySelector('.picture-likes').textContent = pictures[l].likes;
       picturesChildElement.querySelector('.picture-comments').textContent = pictures[l].comments;
-      picturesChildElement.querySelector('.picture').setAttribute('data-index', l);
+      picturesChildElement.querySelector('.picture').setAttribute('data-index', pictures[l].id);
       picturesFragment.appendChild(picturesChildElement);
     }
     document.querySelector('.pictures').appendChild(picturesFragment);
@@ -20,7 +25,12 @@
   };
   window.backend.load(function (pictures) {
     window.pictures = pictures;
+    window.pictures.map(function (item, index) {
+      item.id = index;
+      return item;
+    });
     addTemplates(pictures);
+    showFilters();
   }, function (error) {
     window.showErrorMessage(error);
   });
@@ -49,7 +59,7 @@
         break;
       case 'random':
         sortArr.sort(function () {
-          return (Math.random() - 0.5);
+          return (Math.random() - RANDOM_NUMBER);
         });
         break;
     }
